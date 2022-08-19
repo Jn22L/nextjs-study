@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import Seo from "../components/Seo";
-
 const API_KEY = "5d037153ef6ce7d47b77f819f0384ffa";
-
 export default function Home() {
   const [movies, setMovies] = useState();
   useEffect(() => {
     (async () => {
       //process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
-      //const { results } = await (await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`)).json();
-      const { results } = await (await fetch("/api/movies")).json();
+      const { results } = await (await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`)).json();
+      //const { results } = await (await fetch("/api/movies")).json();
 
       console.log(results);
       setMovies(results);
@@ -18,7 +16,13 @@ export default function Home() {
   return (
     <div className="container">
       <Seo title="Home" />
-      API_KEY
+      {!movies && <h4>Loading...</h4>}
+      {movies?.map((movie) => (
+        <div className="movie" key={movie.id}>
+          <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
+          <h4>{movie.title}</h4>
+        </div>
+      ))}
       <style jsx>{`
         .container {
           display: grid;
