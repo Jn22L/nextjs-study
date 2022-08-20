@@ -1,12 +1,11 @@
 import Seo from "../components/Seo";
-export default function Home({ results }) {
+export default function Home({ happyjs }) {
   return (
     <div className="container">
       <Seo title="Home" />
-      {results?.map((movie) => (
-        <div className="movie" key={movie.id}>
-          <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
-          <h4>{movie.original_title}</h4>
+      {happyjs?.map((happyj) => (
+        <div className="movie" key={happyj.LC_SEQ}>
+          <h4>{happyj.LC_TITLE}</h4>
         </div>
       ))}
       <style jsx>{`
@@ -35,10 +34,10 @@ export default function Home({ results }) {
 }
 
 export async function getServerSideProps() {
-  const { results } = await (await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${process.env.API_KEY}`)).json();
+  const happyjs = await (await fetch(`http://happyj.cafe24app.com/lunch-log/selectTest`)).json();
   return {
     props: {
-      results,
+      happyjs,
     },
   };
 }
