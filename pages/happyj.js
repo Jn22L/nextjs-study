@@ -2,10 +2,12 @@ import Seo from "../components/Seo";
 export default function Home({ happyjs }) {
   return (
     <div className="container">
-      <Seo title="Home" />
+      <Seo title="둔산점심로그" />
       {happyjs?.map((happyj) => (
-        <div className="movie" key={happyj.LC_SEQ}>
+        <div className="movie" key={happyj.LC_DATE}>
+          <img src={happyj.LC_IMG_URL} />
           <h4>{happyj.LC_TITLE}</h4>
+          <h5>{happyj.LC_DATE_FORMAT}</h5>
         </div>
       ))}
       <style jsx>{`
@@ -27,6 +29,12 @@ export default function Home({ happyjs }) {
         .movie h4 {
           font-size: 18px;
           text-align: center;
+          margin: 0;
+        }
+        .movie h5 {
+          font-size: 10px;
+          text-align: center;
+          margin: 0;
         }
       `}</style>
     </div>
@@ -34,7 +42,15 @@ export default function Home({ happyjs }) {
 }
 
 export async function getServerSideProps() {
-  const happyjs = await (await fetch(`http://happyj.cafe24app.com/lunch-log/selectTest`)).json();
+  //const happyjs = await (await fetch(`http://happyj.cafe24app.com/lunch-log/selectTest`)).json();
+  let res = await fetch(
+    `http://happyj.cafe24app.com/lunch-log/selectLunchLogHistory?` +
+      new URLSearchParams({
+        LC_TITLE: "%",
+      })
+  );
+  let happyjs = await res.json();
+  console.log(happyjs);
   return {
     props: {
       happyjs,
