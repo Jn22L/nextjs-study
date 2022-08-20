@@ -1,4 +1,7 @@
-const API_KEY = process.env.API_KEY;
+const API_KEY = process.env.API_KEY; // 이렇게 하면 rewrites 에러남 왜지???
+//const API_KEY = "5d037153ef6ce7d47b77f819f0384ffa";
+
+console.log("API_KEY", API_KEY);
 
 module.exports = {
   reactStrictMode: true,
@@ -12,6 +15,7 @@ module.exports = {
     ];
   },
   async rewrites() {
+    console.log("Rewrites called", API_KEY);
     return [
       {
         source: "/api/movies",
