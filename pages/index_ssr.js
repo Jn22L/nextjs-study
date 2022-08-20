@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Seo from "../components/Seo";
 export default function Home({ results }) {
   const [movies, setMovies] = useState();
