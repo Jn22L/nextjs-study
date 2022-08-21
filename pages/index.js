@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import Seo from "../components/Seo";
+import { useRouter } from "next/router";
 //const API_KEY = "5d037153ef6ce7d47b77f819f0384ffa";
 export default function Home() {
+  const router = useRouter();
   const [movies, setMovies] = useState();
   useEffect(() => {
     (async () => {
@@ -10,14 +13,24 @@ export default function Home() {
       setMovies(results);
     })();
   }, []);
+  //function onClick((id) => router.push(`/movie/${id}`));
+  const onClick = (id, title) => {
+    //router.push({ pathname: `/movies/${id}`, query: { title } }, `/movies/${id}`);
+    router.push(`/movies/${title}/${id}`);
+  };
+
   return (
     <div className="container">
       <Seo title="Home" />
       {!movies && <h4>Loading...</h4>}
       {movies?.map((movie) => (
-        <div className="movie" key={movie.id}>
+        <div onClick={() => onClick(movie.id, movie.original_title)} className="movie" key={movie.id}>
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
-          <h4>{movie.original_title}</h4>
+          <Link href={{ pathname: `/movies/${movie.id}`, query: movie.original_title }} as={`/movies/${movie.id}`}>
+            <a>
+              <h4>{movie.original_title}</h4>
+            </a>
+          </Link>
         </div>
       ))}
       <style jsx>{`
@@ -26,6 +39,9 @@ export default function Home() {
           grid-template-columns: 1fr 1fr;
           padding: 20px;
           gap: 20px;
+        }
+        .movie {
+          cursor: pointer;
         }
         .movie img {
           max-width: 100%;
